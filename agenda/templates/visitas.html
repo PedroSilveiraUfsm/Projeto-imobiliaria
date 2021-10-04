@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section class="section has-background-link-Light">
+    <div class="container">
+        <form id="formListaVisitas" action="" method="GET">
+            {% csrf_token %}
+            <input type="hidden" name="imprimir" id="imprimir" value="">
+            <div class="field is-grouped is-flex is-align-itens-center is-flex-wrap-wrap">
+                <label class="label p-2 mt-2">{{ form.clientes.label }}</label>
+                <div class="control is-expanded">
+                    {{ form.clientes }}
+                </div>
+                <label class="label p-2 mt-2">{{ form.corretores.label }}</label>
+                <div class="control is-expanded">
+                    {{ form.corretores }}
+                </div>
+                    <div class="control">
+                        <button type="button" class="button is-link" onClick="geraPdf('', formListaVisitas);">
+                            Buscar
+                        </button>
+                    </div>
+                {% if object_list %}
+                    <div class="control">
+                        <button type="button" class="button is-link" onClick="geraPdf('pdf', formListaVisitas);">
+                            Imprimir
+                        </button>
+                    </div>
+                {% endif %}
+            </div>
+        </form>
+        {% if object_list %}
+        <center><h1 class="subtitle is-size-4">Visitas Cadastradas </h1></center>
+        <div class="table">
+            <table class="table is-table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+                <thead>
+                <tr>
+                    <th class="has-text-centered">Cliente</th>
+                    <th class="has-text-centered">Corretor</th>
+                    <th class="has-text-centered">Imovel</th>
+                    <th class="has-text-centered">Data e Hora</th>
+                    <th class="has-text-centered" style="width: 100px;">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for visitas in object_list %}
+                <tr>
+                    <td class="has-text-centered">{{ visitas.cliente }}</td>
+                    <td class="has-text-centered">{{ visitas.corretor }}</td>
+                    <td class="has-text-centered">{{ visitas.imovel }}</td>
+                    <td class="has-text-centered">{{ visitas.data_hora }}</td>
+                    <td class="has-text-centered is-flex is-flex-wrap-nowrap is-justify-content-center">
+                        <a href="{% url 'visita_adicionar' %}">
+                            <span class="icon">
+                                <i class="fas fa-edit"></i>
+                            </span>
+                        </a>
+                        <a href="{% url 'visita_editar' visitas.pk %}">
+                            <span class="icon">
+                                <i class="fas fa-eye"></i>
+                            </span>
+                        </a>
+                        <a href="{% url 'visita_apagar' visitas.pk %}">
+                            <span class="icon">
+                                <i class="fas fa-trash-alt"></i>
+                            </span>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <h2>Não existem visitas cadastradas!</h2>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

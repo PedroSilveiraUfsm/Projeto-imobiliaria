@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="columns is-mobile">
+            <div class="column is-half is-offset-one-quarter">
+                <h3 class="title is-size-3">Dados do Proprietário</h3>
+                <p class="p-2 mt-2"><strong>Nome: </strong> {{ object.codigo }}</p>
+                <p class="p-2 mt-2"><strong>Celular: </strong> {{ object.celular }} </p>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <p> Confirma a exclusão do Proprietario "{{ object }}"? </p>
+                    <br/>
+                    <button class="button is-link is-primary" type="submit">Apagar</button>
+                    <button class="button is-danger is-pulled-right" type="reset">
+                        <a href="{% url 'proprietarios' %}">Cancelar</a>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

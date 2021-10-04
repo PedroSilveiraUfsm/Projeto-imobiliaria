@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="columns is-mobile">
+            <div class="column is-half is-offset-one-quarter">
+                <h3 class="title is-size-3">Dados do Imóvel</h3>
+                <p class="p-2 mt-2"><strong>Código: </strong> {{object.codigo}}</p>
+                <p class="p-2 mt-2"><strong>Proprietarios: </strong>
+                    {% for proprietario in imovel.proprietarios %}
+                        {% if forloop.last %}
+                            {{ proprietario }}
+                        {% else %}
+                            {{ proprietario }},
+                        {% endif %}
+                    {% endfor %}
+                </p>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <p> Confirma a exclusão do imóvel "{{ object }}"? </p>
+                    <br/>
+                    <button class="button is-link is-primary" type="submit">Apagar</button>
+                    <button class="button is-danger is-pulled-right" type="reset">
+                        <a href="{% url 'imoveis' %}">Cancelar</a>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
